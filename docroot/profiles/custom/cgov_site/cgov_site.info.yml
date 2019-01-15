@@ -39,6 +39,7 @@ install:
   - cgov_home_landing
   - cgov_content_block
   - cgov_press_release
+  - cgov_embed
   # other Core
   - media
   - workflows

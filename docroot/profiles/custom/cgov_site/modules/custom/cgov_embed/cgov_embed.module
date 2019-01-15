@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains cgov_embed.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function cgov_embed_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cgov_embed module.
+    case 'help.page.cgov_embed':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Embed module extensions') . '</p>';
+      return $output;
+
+    default:
+  }
+}
