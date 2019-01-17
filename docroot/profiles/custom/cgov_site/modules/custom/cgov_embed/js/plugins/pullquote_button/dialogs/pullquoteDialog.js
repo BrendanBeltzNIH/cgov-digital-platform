@@ -14,10 +14,16 @@ CKEDITOR.dialog.add('pullquoteDialog', function(editor) {
             label: 'Author',
             validate: CKEDITOR.dialog.validate.notEmpty('Author Text field can not be empty.'),
             setup: function(element) {
-              this.setValue(element.getText());
+              this.setValue(element.getAttribute('authortext'));
             },
             commit: function(element) {
-              element.setText(this.getValue());
+              const authortext = this.getValue();
+              if (authortext) {
+                element.setAttribute('authortext', authortext);
+              }
+              else if (!this.insertMode) {
+                element.removeAttribute('authortext');
+              }
             }
           },
           {
@@ -26,10 +32,16 @@ CKEDITOR.dialog.add('pullquoteDialog', function(editor) {
             label: 'Body',
             validate: CKEDITOR.dialog.validate.notEmpty('Body Text field can not be empty.'),
             setup: function(element) {
-              this.setValue(element.getText());
+              this.setValue(element.getAttribute('bodytext'));
             },
             commit: function(element) {
-              element.setText(this.getValue());
+              const bodytext = this.getValue();
+              if (bodytext) {
+                element.setAttribute('bodytext', bodytext);
+              }
+              else if (!this.insertMode) {
+                element.removeAttribute('bodytext');
+              }
             }
           },
           {
@@ -48,43 +60,40 @@ CKEDITOR.dialog.add('pullquoteDialog', function(editor) {
     ],
 
     onShow: function() {
-      const selection = editor.getSelection();
-      let element = selection.getStartElement();
+      var selection = editor.getSelection();
+      var element = selection.getStartElement();
 
-      if (element.getAttribute('class') !== 'tweetabletext') {
-        element = editor.document.createElement('a');
-        this.insertMode = true;
+      if ( element )
+          element = element.getAscendant( 'cgov-pullquote', true );
+
+      if ( !element || element.getName() != 'cgov-pullquote' ) {
+          element = editor.document.createElement( 'cgov-pullquote' );
+          this.insertMode = true;
       }
-      else {
-        this.insertMode = false;
-      }
+      else
+          this.insertMode = false;
 
       this.element = element;
-      if (!this.insertMode) {
-        this.setupContent(this.element);
-      }
+      if ( !this.insertMode )
+          this.setupContent( this.element );
     },
 
     onOk: function() {
       const dialog = this;
       const element = this.element;
 
-      const authorText = dialog.getValueOf('tab-basic', 'authortext');
-      const bodyText = dialog.getValueOf('tab-basic', 'bodytext');
+      const authortext = dialog.getValueOf('tab-basic', 'authortext');
+      const bodytext = dialog.getValueOf('tab-basic', 'bodytext');
       const alignment = dialog.getValueOf('tab-basic', 'alignment');
       const containerClass = alignment === 'centered' ? '' : '-' + alignment;
 
-      const container = '<div class="pullquote'
-        + containerClass
-        + '"><p class="pullquote-text">'
-        + bodyText
-        + '</p><p class="author">'
-        + authorText
-        + '</p></div>';
+      element.setAttribute('containerClass', containerClass);
+      element.setAttribute('bodytext', bodytext);
+      element.setAttribute('authortext', authortext);
 
       this.commitContent(element);
       if (this.insertMode) {
-        editor.insertHtml(container);
+        editor.insertElement(element);
       }
     }
   }
