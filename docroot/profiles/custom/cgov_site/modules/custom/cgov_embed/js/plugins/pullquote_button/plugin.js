@@ -3,28 +3,28 @@
     icons: 'pullquote',
 
     init: editor => {
-      editor.addCommand( 'insertPullquote', new CKEDITOR.dialogCommand('pullquoteDialog'));
+      editor.addCommand('insertPullquote', new CKEDITOR.dialogCommand('pullquoteDialog'));
 
-      editor.ui.addButton( 'Pullquote_button', {
+      editor.ui.addButton('Pullquote_button', {
         label: 'Insert Pullquote',
         icon: 'pullquote',
         command: 'insertPullquote',
         toolbar: 'Media, 0'
       });
 
-      if ( editor.contextMenu ) {
-        editor.addMenuGroup( 'insertPullquoteGroup' );
-        editor.addMenuItem( 'insertPullquoteItem', {
-            label: 'Edit Pullquote',
-            icon: 'pullquote',
-            command: 'insertPullquote',
-            group: 'insertPullquoteGroup'
+      if(editor.contextMenu) {
+        editor.addMenuGroup('insertPullquoteGroup');
+        editor.addMenuItem('insertPullquoteItem', {
+          label: 'Edit Pullquote',
+          icon: 'pullquote',
+          command: 'insertPullquote',
+          group: 'insertPullquoteGroup'
         });
 
-        editor.contextMenu.addListener( function( element ) {
-            if ( element.getAscendant( 'pullquote', true ) ) {
-                return { insertPullquoteItem: CKEDITOR.TRISTATE_OFF };
-            }
+        editor.contextMenu.addListener(function(element) {
+          if (element.getAscendant('pullquote', true)) {
+              return { insertPullquoteItem: CKEDITOR.TRISTATE_OFF };
+          }
         });
       }
 

@@ -60,22 +60,25 @@ CKEDITOR.dialog.add('pullquoteDialog', function(editor) {
     ],
 
     onShow: function() {
-      var selection = editor.getSelection();
-      var element = selection.getStartElement();
+      const selection = editor.getSelection();
+      const element = selection.getStartElement();
 
-      if ( element )
-          element = element.getAscendant( 'cgov-pullquote', true );
-
-      if ( !element || element.getName() != 'cgov-pullquote' ) {
-          element = editor.document.createElement( 'cgov-pullquote' );
-          this.insertMode = true;
+      if(element) {
+        element = element.getAscendant( 'cgov-pullquote', true );
       }
-      else
-          this.insertMode = false;
+
+      if(!element || element.getName() != 'cgov-pullquote') {
+        element = editor.document.createElement( 'cgov-pullquote' );
+        this.insertMode = true;
+      }
+      else {
+        this.insertMode = false;
+      }
 
       this.element = element;
-      if ( !this.insertMode )
-          this.setupContent( this.element );
+      if (!this.insertMode) {
+        this.setupContent(this.element);
+      }
     },
 
     onOk: function() {
@@ -92,7 +95,7 @@ CKEDITOR.dialog.add('pullquoteDialog', function(editor) {
       element.setAttribute('authortext', authortext);
 
       this.commitContent(element);
-      if (this.insertMode) {
+      if(this.insertMode) {
         editor.insertElement(element);
       }
     }
